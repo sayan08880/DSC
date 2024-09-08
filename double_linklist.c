@@ -43,12 +43,12 @@ void crited_list(void){
 void display_list(void){
 	list *ptr;
 	ptr = start;
-	printf("NULL <-> ");
+	printf("\nNULL <-> ");
 	while(ptr!= NULL){
 		printf("%d <-> ",ptr->data);
 		ptr = ptr -> next;
 	}
-	printf("NULL");
+	printf("NULL\n");
 }
 
 void incertend_list(void){
@@ -121,18 +121,82 @@ void insertanyafter_list(void){
 
 }
 
+void deletebefore_list(void){
+	list *ptr ;
+	ptr = start;
+	start = start ->next;
+	start->pre = NULL;
+	free(ptr);
+}
 
+void deleateend_list(void){
+	list *ptr;
+	ptr = start;
+	while( ptr ->next != NULL){
+		ptr = ptr ->next;
+	}
+    ptr -> pre -> next = NULL;
+	free(ptr);
+}
+
+void deleteanyafter_list(void){
+	list *ptr , *temp;
+	int num;
+	printf("\n ENTER THE NODE VALU AFTER DELETE THE NODE : ");
+	scanf("%d",&num);
+	ptr = start;
+	while(ptr->data != num){
+		ptr = ptr -> next;
+	}
+	if(ptr->next == NULL){
+       printf("\n NO NODE TO DELETE AFTER %d.\n",num);
+	   return;
+	}
+	temp = ptr->next;
+	ptr -> next = temp ->next;
+	if(temp->next != NULL){
+		temp->next->pre = ptr;
+	}
+	
+	
+	free(temp);
+}
+
+void deleteanybefore_list(void){
+	list *ptr, *temp;
+	int num;
+	printf("\n ENTER THE NODE DATA BEFORE DELETE NODE : ");
+	scanf("%d",&num);
+	ptr = start;
+	while(ptr->data != num){
+		ptr = ptr -> next;
+	}
+	temp = ptr->pre;
+	if(temp == start){
+		deletebefore_list();
+	}else{
+		ptr->pre = temp ->pre;
+		temp ->pre->next = ptr ;
+	}
+	free(temp);
+}
+
+ 
 int main(){
 	int opp;
 	do{
 		printf("\n ***** MAIN FUNTION ***** \n");
-		printf("\n 1: CRITED A LIST");
-		printf("\n 2: DISPLAY LIST");
-		printf("\n 3:INSERT END");
-		printf("\n 4:INSERT BEFORE");
-		printf("\n 5:INSERT AFTER ANY POSITION");
-		printf("\n 6:INSERT BEFORE ANY POSITION");
-		printf("\n 7: EXIT");
+		printf("\n 1: CRITED NODE LIST");
+		printf("\n 2: DISPLAY NODE LIST");
+		printf("\n 3: INSERT BEFORE NODE");
+		printf("\n 4: INSERT END NODE");
+		printf("\n 5: INSERT BEFORE ANY POSITION NODE");
+		printf("\n 6: INSERT AFTER ANY POSITION NODE");
+		printf("\n 7: DELETE BEFORE NODE");
+		printf("\n 8: DELETE END NODE");
+		printf("\n 9: DELETE BEFORE ANY POSITION NODE");
+		printf("\n 10: DELETE AFTER ANY POSITION NODE");
+		printf("\n 11: DELETE NODE");
 		printf("\n ***** START ***** \n");
 	    printf("\n ENTER YOUR OPTION : ");
 	    scanf("%d",&opp);			
@@ -145,11 +209,11 @@ int main(){
 	    		display_list();
 	    		break; 
 			case 3:
-			    incertend_list();
+				insertbefore_list();
 				display_list();
 				break;
 			case 4:
-			    insertbefore_list();
+			    incertend_list();
 				display_list();
 				break;
 			case 5:
@@ -160,9 +224,24 @@ int main(){
 			    insertanyafter_list();
 				display_list();
 				break;
-
+			case 7:
+			    deletebefore_list();
+				display_list();
+				break;
+			case 8:
+				deleateend_list();
+				display_list();
+				break;
+			case 9:
+			    deleteanybefore_list();
+				display_list();
+				break;
+			case 10:
+			    deleteanyafter_list();
+				display_list();
+				break;				
 		}
-	}while(opp <= 7);
+	}while(opp <= 11);
 	
 	return 0;
 }
